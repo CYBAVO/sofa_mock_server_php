@@ -86,6 +86,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     log_access($uri, $resp);
     echo response($resp);
     return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/transactions\/(?<order_id>[\w\-_]+)\/cancel$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/transactions/'.$m['order_id'].'/cancel';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/transactions\/(?<order_id>[\w\-_]+)$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/transactions/'.$m['order_id'];
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
@@ -112,6 +118,18 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     return;
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/notifications\/get_by_id$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/notifications/get_by_id';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/receiver\/notifications\/txid\/(?<txid>[\w\-_]+)\/(?<vout_index>\d+)$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/receiver/notifications/txid/'.$m['txid'].'/'.$m['vout_index'];
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/notifications\/order_id\/(?<order_id>[\w\-_]+)$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/notifications/order_id/'.$m['order_id'].'/'.$m['vout_index'];
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);

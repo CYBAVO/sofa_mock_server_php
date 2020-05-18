@@ -341,7 +341,7 @@ kbd {
 
 <ul>
 <li><a href="#mock-server">Mock Server</a></li>
-<li><a href="#curl-testing-commands">CURL Testing Commands</a></li>
+<li><a href="#curl-testing-commands">cURL Testing Commands</a></li>
 <li><a href="#other-language-versions">Other Language Versions</a></li>
 </ul></li>
 </ul>
@@ -350,9 +350,7 @@ kbd {
 
 <h1 id="toc_1">Get Started</h1>
 
-<ul>
-<li>Refer to <a href="#mock-server">mock server</a> to integrate CYBAVO SOFA API.</li>
-</ul>
+<p>Refer to <a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER#get-started">here</a> for detailed introduction.</p>
 
 <p><a name="deposit-wallet-api"></a></p>
 
@@ -388,19 +386,21 @@ kbd {
 
 <blockquote>
 <p>Required version: PHP 7.3.7 or later (with sqlite3 enabled)</p>
+
+<p>Replace the [SOFA_MOCK_SERVER_PHP_PATH] in the following commands to source code directory.</p>
 </blockquote>
 
 <ul>
 <li>If you have PHP installed then use following command to start the built-in web server.
 
 <ul>
-<li>$ cd SOFA_MOCK_SERVER_PHP_PATH</li>
+<li>$ cd [SOFA_MOCK_SERVER_PHP_PATH]</li>
 <li>$ php -S 0.0.0.0:8889</li>
 </ul></li>
 <li>Otherwise use docker to setup mock server.
 
 <ul>
-<li>$ docker run --name mockserver -d -v SOFA_MOCK_SERVER_PHP_PATH:/var/www/html -p 8889:8889 php:7.3.7-fpm</li>
+<li>$ docker run --name mockserver -d -v [SOFA_MOCK_SERVER_PHP_PATH]:/var/www/html -p 8889:8889 php:7.3.7-fpm</li>
 <li>$ docker exec -it mockserver bash</li>
 <li>$ php -S 0.0.0.0:8889</li>
 </ul></li>
@@ -444,7 +444,7 @@ http://localhost:8889/v1/mock/wallets/{WALLET-ID}/apitoken</code></pre></div>
 
 <p><a name="curl-testing-commands"></a></p>
 
-<h1 id="toc_10">CURL Testing Commands</h1>
+<h1 id="toc_10">cURL Testing Commands</h1>
 
 <p>Refer to <a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER#curl-testing-commands">here</a> for curl testing commands.</p>
 
@@ -453,8 +453,8 @@ http://localhost:8889/v1/mock/wallets/{WALLET-ID}/apitoken</code></pre></div>
 <h1 id="toc_11">Other Language Versions</h1>
 
 <ul>
-<li><a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER">GO</a></li>
-<li><a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER_JAVA">JAVA</a></li>
+<li><a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER">Go</a></li>
+<li><a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER_JAVA">Java</a></li>
 <li><a href="https://github.com/CYBAVO/SOFA_MOCK_SERVER_JAVASCRIPT">Javascript</a></li>
 </ul>
 

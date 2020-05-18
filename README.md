@@ -7,14 +7,13 @@
 - [Query API](#query-api)
 - Testing
 	- [Mock Server](#mock-server)
-	- [CURL Testing Commands](#curl-testing-commands)
+	- [cURL Testing Commands](#curl-testing-commands)
 	- [Other Language Versions](#other-language-versions)
 
 <a name="get-started"></a>
 # Get Started
 
-- Refer to [mock server](#mock-server) to integrate CYBAVO SOFA API.
-
+Refer to [here](https://github.com/CYBAVO/SOFA_MOCK_SERVER#get-started) for detailed introduction.
 
 <a name="deposit-wallet-api"></a>
 # Deposit Wallet API
@@ -44,12 +43,14 @@ $api_server_url = 'BACKEND_SERVER_URL';
 
 ### How to run
 > Required version: PHP 7.3.7 or later (with sqlite3 enabled)
+> 
+> Replace the [SOFA\_MOCK\_SERVER\_PHP\_PATH] in the following commands to source code directory.
 
 - If you have PHP installed then use following command to start the built-in web server.
-	- $ cd SOFA\_MOCK\_SERVER\_PHP\_PATH
+	- $ cd [SOFA\_MOCK\_SERVER\_PHP\_PATH]
 	- $ php -S 0.0.0.0:8889
 - Otherwise use docker to setup mock server.
-	- $ docker run --name mockserver -d -v SOFA\_MOCK\_SERVER\_PHP\_PATH:/var/www/html -p 8889:8889 php:7.3.7-fpm
+	- $ docker run --name mockserver -d -v [SOFA\_MOCK\_SERVER\_PHP\_PATH]:/var/www/html -p 8889:8889 php:7.3.7-fpm
 	- $ docker exec -it mockserver bash
 	- $ php -S 0.0.0.0:8889
 
@@ -85,12 +86,12 @@ http://localhost:8889/v1/mock/wallets/withdrawal/callback
 > NOTE: Because the mock server uses a single-threaded PHP built-in web server as underlying server, it cannot process withdrawal authentication callbacks and withdrawal requests at the same time. While using mock server, please do not set the withdrawal authentication callback URL.
 
 <a name="curl-testing-commands"></a>
-# CURL Testing Commands
+# cURL Testing Commands
 
 Refer to [here](https://github.com/CYBAVO/SOFA_MOCK_SERVER#curl-testing-commands) for curl testing commands.
 
 <a name="other-language-versions"></a>
 # Other Language Versions
-- [GO](https://github.com/CYBAVO/SOFA_MOCK_SERVER)
-- [JAVA](https://github.com/CYBAVO/SOFA_MOCK_SERVER_JAVA)
+- [Go](https://github.com/CYBAVO/SOFA_MOCK_SERVER)
+- [Java](https://github.com/CYBAVO/SOFA_MOCK_SERVER_JAVA)
 - [Javascript](https://github.com/CYBAVO/SOFA_MOCK_SERVER_JAVASCRIPT)
