@@ -60,7 +60,7 @@ $api_server_url = 'BACKEND_SERVER_URL';
 - 	Put API code/secret to mock server's database
 
 ```
-curl -X POST -d '{"api_code":"API-CODE","api_secret":"API-SECRET"}' \
+curl -X POST -H "Content-Type: application/json" -d '{"api_code":"API-CODE","api_secret":"API-SECRET"}' \
 http://localhost:8889/v1/mock/wallets/{WALLET-ID}/apitoken
 ```
 
