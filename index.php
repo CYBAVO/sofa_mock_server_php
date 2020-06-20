@@ -180,6 +180,61 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     log_text('/v1/mock/callback',
         "header_checksum: ".$header_checksum." <-> checksum: ".$checksum."\npayload: ".$post_data);
     if (!strcmp($header_checksum, $checksum)) {
+        // Callback Type
+        // DepositCallback  = 1
+        // WithdrawCallback = 2
+        // CollectCallback  = 3
+        // AirdropCallback  = 4
+
+        // Processing State
+        // ProcessingStateInPool  = 0
+        // ProcessingStateInChain = 1
+        // ProcessingStateDone    = 2
+
+        // Callback State
+        // CallbackStateInit            = 0
+        // CallbackStateHolding         = 1
+        // CallbackStateInPool          = 2
+        // CallbackStateInChain         = 3
+        // CallbackStateDone            = 4
+        // CallbackStateFailed          = 5
+        // CallbackStateResended        = 6
+        // CallbackStateRiskControl     = 7
+        // CallbackStateCancelled       = 8
+        // CallbackStateUTXOUnavailable = 9
+        // CallbackStateDropped         = 10
+        // CallbackStateInChainFailed   = 11
+        // CallbackStatePaused          = 12
+
+        $callback = json_decode($post_data, true);
+        if ($callback['type'] == 1) { // DepositCallback
+            //
+            // deposit unique ID
+            $uniqueID = $callback['txid'].'_'.$callback['vout_index'];
+            //
+            if ($callback['processing_state'] == 2) { // ProcessingStateDone
+                // deposit succeeded, use the deposit unique ID to update your business logic
+            }
+        } else if ($callback['type'] == 2) { // WithdrawCallback
+            //
+            // withdrawal unique ID
+            $uniqueID = $callback['order_id'];
+            //
+            if ($callback['state'] == 3 && $callback['processing_state'] == 2) { // CallbackStateInChain && ProcessingStateDone
+                // withdrawal succeeded, use the withdrawal uniqueID to update your business logic
+            } else if ($callback['state'] == 5 || $callback['state'] == 11) { // CallbackStateFailed || CallbackStateInChainFailed
+                // withdrawal failed, use the withdrawal unique ID to update your business logic
+            }
+        } else if ($callback['type'] == 4) { // AirdropCallback
+            //
+            // airdrop unique ID
+            $uniqueID = $callback['txid'].'_'.$callback['vout_index'];
+            //
+            if ($callback['processing_state'] == 2) { // ProcessingStateDone
+                // airdrop succeeded, use the airdrop unique ID to update your business logic
+            }
+        }
+        // reply 200 OK to confirm the callback has been processed
         echo response_plaintext(200, 'OK');
     } else {
         echo response_plaintext(400, 'Bad checksum');
@@ -203,6 +258,7 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     //     return;
     // }
 
+    // reply 200 OK to confirm the callback has been processed
     echo response_plaintext(200, 'OK');
     return;
 }
