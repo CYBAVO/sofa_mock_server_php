@@ -182,6 +182,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     log_access($uri, $resp);
     echo response($resp);
     return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/receiver\/balance$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/receiver/balance';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
 } else if (!strcmp($path, '/v1/mock/wallets/callback')) {
     $callback = json_decode($post_data, true);
     $ac = get_api_code($callback['wallet_id']);
