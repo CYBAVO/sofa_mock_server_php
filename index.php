@@ -104,6 +104,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     log_access($uri, $resp);
     echo response($resp);
     return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/transactions\/(?<order_id>[\w\-_]+)\/all$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/transactions/'.$m['order_id'].'/all';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/balance$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/balance';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
