@@ -291,6 +291,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     // reply 200 OK to confirm the callback has been processed
     echo response_plaintext(200, 'OK');
     return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/addresses\/contract_txid$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/addresses/contract_txid';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
 }
 
 $resp['status'] = 404;
