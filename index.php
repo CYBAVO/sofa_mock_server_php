@@ -80,13 +80,13 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     log_access($uri, $resp);
     echo response($resp);
     return;
-} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/callback\/resend$/i', $path, $m)) {
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/collection\/notifications\/manual$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/collection/notifications/manual';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
     return;
-} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/withdraw$/i', $path, $m)) {
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/transactions$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/transactions';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
     log_access($uri, $resp);
@@ -299,6 +299,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     return;
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/transactions\/acl$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/transactions/acl';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/notifications\/manual$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/notifications/manual';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
