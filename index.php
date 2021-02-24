@@ -123,7 +123,11 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     echo response($resp);
     return;
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apisecret\/activate$/i', $path, $m)) {
-    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/apisecret/activate';
+    if ($m['wallet_id'] == 0) {
+        $uri = '/v1/sofa/wallets/readonly/apisecret/activate';
+    } else {
+        $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/apisecret/activate';
+    }
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
@@ -330,6 +334,24 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/whitelist\/check$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/whitelist/check';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/addresses\/label$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/addresses/label';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/addresses\/get_labels$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/addresses/get_labels';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/readonly\/walletlist$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/readonly/walletlist';
+    $resp = make_request(0, $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
     return;

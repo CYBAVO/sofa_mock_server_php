@@ -33,6 +33,10 @@ function make_request($wallet, $method, $api, $params, $postData) {
 
     $ch = curl_init();
     $ac = get_api_code($wallet);
+    if (empty($ac)) {
+        // try read-only API code
+        $ac = get_api_code(0);
+    }
     $header = array(
         'X-API-CODE: '.$ac['api_code'],
         'X-CHECKSUM: '.build_checksum($params, $ac['api_secret'], $t, $r, $postData),
