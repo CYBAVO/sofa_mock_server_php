@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2018-2020 The CYBAVO developers
+// Copyright (c) 2018-2021 The CYBAVO developers
 // All Rights Reserved.
 // NOTICE: All information contained herein is, and remains
 // the property of CYBAVO and its suppliers,
@@ -23,7 +23,7 @@ function build_checksum($params, $secret, $t, $r, $postData) {
     return hash('sha256', implode('&', $params));
 }
 
-function make_request($wallet, $method, $api, $params, $postData) {
+function make_request($targetID, $method, $api, $params, $postData) {
     $r = random_string();
     $t = time();
     $url = $GLOBALS['api_server_url'].$api.'?t='.$t.'&r='.$r;
@@ -32,7 +32,7 @@ function make_request($wallet, $method, $api, $params, $postData) {
     }
 
     $ch = curl_init();
-    $ac = get_api_code($wallet);
+    $ac = get_api_code($targetID);
     if (empty($ac)) {
         // try read-only API code
         $ac = get_api_code(0);

@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2018-2020 The CYBAVO developers
+// Copyright (c) 2018-2021 The CYBAVO developers
 // All Rights Reserved.
 // NOTICE: All information contained herein is, and remains
 // the property of CYBAVO and its suppliers,
@@ -354,6 +354,97 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     $resp = make_request(0, $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/apitoken$/i', $path, $m)) {
+    $payload = json_decode($post_data, true);
+    set_api_code($m['merchant_id'], $payload['api_code'], $payload['api_secret']);
+    $resp['status'] = 200;
+    $resp['result'] = '{"result": 1}';
+    log_access($m['0'], $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/order$/i', $path, $m)) {
+    if ($method == 'POST') {
+        $data = json_decode($post_data, true);
+        if (!empty($data) && !empty($data['redirect_url'])) {
+            $data['redirect_url'] = urlencode($data['redirect_url']);
+            $post_data = json_encode($data);
+        }
+    }
+
+    $uri = '/v1/merchant/'.$m['merchant_id'].'/order';
+    $resp = make_request($m['merchant_id'], $method, $uri, $query, $post_data);
+
+    if ($method == 'GET') {
+        $data = json_decode($resp['result'], true);
+        if (!empty($data['redirect_url'])) {
+            $data['redirect_url'] = urldecode($data['redirect_url']);
+            $resp['result'] = json_encode($data);
+        }
+    }
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/order\/duration$/i', $path, $m)) {
+    $uri = '/v1/merchant/'.$m['merchant_id'].'/order/duration';
+    $resp = make_request($m['merchant_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+}  else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/apisecret$/i', $path, $m)) {
+    $uri = '/v1/merchant/'.$m['merchant_id'].'/apisecret';
+    $resp = make_request($m['merchant_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/apisecret\/activate$/i', $path, $m)) {
+    $uri = '/v1/merchant/'.$m['merchant_id'].'/apisecret/activate';
+    $resp = make_request($m['merchant_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/apisecret\/refreshsecret$/i', $path, $m)) {
+    $uri = '/v1/merchant/'.$m['merchant_id'].'/apisecret/refreshsecret';
+    $resp = make_request($m['merchant_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+}  else if (preg_match('/\/v1\/mock\/merchant\/(?<merchant_id>\d+)\/notifications\/manual$/i', $path, $m)) {
+    $uri = '/v1/merchant/'.$m['merchant_id'].'/notifications/manual';
+    $resp = make_request($m['merchant_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (!strcmp($path, '/v1/mock/merchant/callback')) {
+    $callback = json_decode($post_data, true);
+    $ac = get_api_code($callback['merchant_id']);
+
+    $header_checksum = $_SERVER['HTTP_X_CHECKSUM'];
+    $payload = $post_data.$ac['api_secret'];
+    $checksum = base64url_encode(hash('sha256', $payload, true));
+    log_text('/v1/mock//merchant/callback',
+        "header_checksum: ".$header_checksum." <-> checksum: ".$checksum."\npayload: ".$post_data);
+    if (!strcmp($header_checksum, $checksum)) {
+
+        // Merchant Order State
+        // Success      = 0
+        // Expired      = 1
+        // Insufficient = 2
+        // Excess       = 3
+        // Cancel       = 4
+
+        $callback = json_decode($post_data, true);
+        if ($callback['state'] == 0) {
+        } else if ($callback['state'] == 1) {
+        } else if ($callback['state'] == 2) {
+        } else if ($callback['state'] == 3) {
+        } else if ($callback['state'] == 4) {
+        }
+        // reply 200 OK to confirm the callback has been processed
+        echo response_plaintext(200, 'OK');
+    } else {
+        echo response_plaintext(400, 'Bad checksum');
+    }
     return;
 }
 
