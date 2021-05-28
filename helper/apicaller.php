@@ -41,6 +41,7 @@ function make_request($targetID, $method, $api, $params, $postData) {
         'X-API-CODE: '.$ac['api_code'],
         'X-CHECKSUM: '.build_checksum($params, $ac['api_secret'], $t, $r, $postData),
         'User-Agent: php',
+        'Content-Type: application/json',
     );
     curl_setopt($ch, CURLOPT_URL, $url);
     if (!strcasecmp($method, 'POST') || !strcasecmp($method, 'DELETE')) {
