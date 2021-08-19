@@ -226,19 +226,13 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
         // ProcessingStateDone    = 2
 
         // Callback State
-        // CallbackStateInit            = 0
         // CallbackStateHolding         = 1
         // CallbackStateInPool          = 2
         // CallbackStateInChain         = 3
-        // CallbackStateDone            = 4
         // CallbackStateFailed          = 5
-        // CallbackStateResended        = 6
-        // CallbackStateRiskControl     = 7
         // CallbackStateCancelled       = 8
-        // CallbackStateUTXOUnavailable = 9
         // CallbackStateDropped         = 10
         // CallbackStateInChainFailed   = 11
-        // CallbackStatePaused          = 12
 
         $callback = json_decode($post_data, true);
         if ($callback['type'] == 1) { // DepositCallback
@@ -448,6 +442,18 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     return;
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/notifications\/inspect$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/notifications/inspect';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/sender\/transactions$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/sender/transactions';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/autofees$/i', $path, $m)) {
+    $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/autofees';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
