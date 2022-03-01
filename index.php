@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2018-2021 The CYBAVO developers
+// Copyright (c) 2018-2022 The CYBAVO developers
 // All Rights Reserved.
 // NOTICE: All information contained herein is, and remains
 // the property of CYBAVO and its suppliers,
@@ -485,6 +485,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
 } else if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/receiver\/addresses\/verify$/i', $path, $m)) {
     $uri = '/v1/sofa/wallets/'.$m['wallet_id'].'/receiver/addresses/verify';
     $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
+} else if (preg_match('/\/v1\/mock\/currency\/prices$/i', $path)) {
+    $uri = '/v1/sofa/currency/prices';
+    $resp = make_request(0, $method, $uri, $query, $post_data);
     log_access($uri, $resp);
     echo response($resp);
     return;

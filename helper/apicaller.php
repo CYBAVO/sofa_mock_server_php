@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2018-2021 The CYBAVO developers
+// Copyright (c) 2018-2022 The CYBAVO developers
 // All Rights Reserved.
 // NOTICE: All information contained herein is, and remains
 // the property of CYBAVO and its suppliers,
@@ -57,12 +57,50 @@ function make_request($targetID, $method, $api, $params, $postData) {
     }
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 1);
     $result = curl_exec($ch);
     $resp = array();
-    $resp['result'] = $result;
+
+    $headerSize = curl_getinfo($ch , CURLINFO_HEADER_SIZE);
+    $headerStr = substr($result, 0, $headerSize);
+    $bodyStr = substr($result, $headerSize);
+    $headers = headersToArray($headerStr);
+
+    $resp['result'] = $bodyStr;
     $resp['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    //
+    // verify checksum of a successful response
+    //
+    if ($resp['status'] == 200) {
+        $header_checksum = $headers['X-Checksum'];
+        $payload = $bodyStr.$ac['api_secret'];
+        $checksum = base64url_encode(hash('sha256', $payload, true));
+        if (strcmp($header_checksum, $checksum) != 0) {
+            $resp['result'] = 'mismatched response checksum';
+            $resp['status'] = 400;
+        }
+    }
     curl_close($ch);
-    
+
     return $resp;
 }
+
+function headersToArray($str)
+{
+    $headers = array();
+    $tmp = explode("\r\n" , $str);
+    for ($i = 0; $i < count($tmp) ; ++$i)
+    {
+        $pos = strpos($tmp[$i], ":");
+        if ($pos != false)
+        {
+            $headerName = substr($tmp[$i], 0, $pos);
+            $headerValue = substr($tmp[$i], $pos + 2);
+            $headers[$headerName] = $headerValue;
+        }
+    }
+    return $headers;
+}
+
 ?>
