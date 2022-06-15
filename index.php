@@ -500,6 +500,12 @@ if (preg_match('/\/v1\/mock\/wallets\/(?<wallet_id>\d+)\/apitoken$/i', $path, $m
     log_access($uri, $resp);
     echo response($resp);
     return;
+} else if (preg_match('/\/v1\/mock\/currency\/(?<currency>\d+)\/contract\/get-multiple-tokenuri$/i', $path, $m)) {
+    $uri = '/v1/sofa/currency/'.$m['currency'].'/contract/get-multiple-tokenuri';
+    $resp = make_request($m['wallet_id'], $method, $uri, $query, $post_data);
+    log_access($uri, $resp);
+    echo response($resp);
+    return;
 }
 
 $resp['status'] = 404;
