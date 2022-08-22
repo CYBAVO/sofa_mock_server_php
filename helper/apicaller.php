@@ -73,7 +73,7 @@ function make_request($targetID, $method, $api, $params, $postData) {
     // verify checksum of a successful response
     //
     if ($resp['status'] == 200) {
-        $header_checksum = $headers['X-Checksum'];
+        $header_checksum = $headers['x-checksum'];
         $payload = $bodyStr.$ac['api_secret'];
         $checksum = base64url_encode(hash('sha256', $payload, true));
         if (strcmp($header_checksum, $checksum) != 0) {
